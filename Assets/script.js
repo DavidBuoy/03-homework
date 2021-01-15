@@ -2,37 +2,52 @@
 
 
 // Special characters 
-var character = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "\:", "\;", " < ", "=", " > ", " ? ", "@", "[", "\\", "]", " ^ ", "_", "`", "{", "|", "}", "~"];
+var character = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "<", "=", ">", "?", "@", "[", "]", "^", "_", "`", "{", "|", "}", "~"];
 // Numeric characters
 var number = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 // Alphabetical characters
 var alpha = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 //  Alphabetical Uppercase characters
-var alphaUpperCase = alpha.map(function (x) {
-  return x.toUpperCase();
-});
-var passwordLength;
+var alphaUpperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
-var choices;
-// let generateBtn = document.querySelector("#generate");
-
+// This is the button that when you click it it generates the password
 document.querySelector("#generate").addEventListener("click", generatePassword);
 
 
 
 
-// Password Lenght
+
+// Password Lenght Options
 function generatePassword() {
 
+  // This variable holds your slection or critiria of the window prompts of what you want in your password from above. 
+  var choices;
+
+  // This variable is holding an array of the random password generated below.
+  var password = []
+
+  // This Variable is designed to choice how many characters your password holds. 
   var passwordLength = window.prompt("Pick the length of password between 8 and 128")
 
+  var pattern = new RegExp("[0-9]");
+  
   if (!passwordLength) {
-    window.alert("you gone and done it!")
+   window.alert("Value cannot be empty")
+   return;
   }
+
   else if (passwordLength < 8 || passwordLength > 128) {
-    passwordLength = window.prompt("Pick the length of password between 8 and 128")
+  window.alert("Please pick a Numerical Value between 8 and 128.")
+  return;
   }
-  else {
+  else if (!pattern.test(passwordLength)) {
+  window.alert("Must be a Numerical Value.")
+  return;
+  }
+
+
+  // This Else is saying you also need to choice if you want your password to have numbers, characters and be case sensitive in your password. 
+  
     var passwordUpperCase = window.confirm("Uppercase Letters - Ok or cancel");
 
     var passwordLowerCase = window.confirm("Lowercase Letters - Ok or cancel");
@@ -41,70 +56,111 @@ function generatePassword() {
 
     var passwordCharacters = window.confirm("Special Characters? Ok or Cancel");
 
-  }
-
-  // This is giving us 4 possitive options.
+  // This is giving us all 4 possitive options.
   if (passwordLowerCase && passwordUpperCase && passwordNumbers && passwordCharacters) {
     choices = alpha.concat(alphaUpperCase, number, character);
   }
 
-  // THESE STATEMENTS ARE TELLING YOU WHICH VARIABLE IS TAKEN OUT
-  // This giving us 3 options without characters
+  // Statements of 3:
+
+  // Uppercase, Lowercase and Numbers
   else if (passwordLowerCase && passwordUpperCase && passwordNumbers) {
     choices = alpha.concat(alphaUpperCase, number);
   }
-  // 3 options without numbers
+  // Uppercase, Lowercase and Characters
   else if (passwordLowerCase && passwordUpperCase && passwordCharacters) {
     choices = alpha.concat(alphaUpperCase, character);
   }
-  // 3 options without uppercase
+  // Lowercase, Numbers and Characters
   else if (passwordLowerCase && passwordNumbers && passwordCharacters) {
     choices = alpha.concat(number, character);
   }
-  // 3 options without lowercase
+  // 3 Uppercase, Numbers and Characters
   else if (passwordUpperCase && passwordNumbers && passwordCharacters) {
     choices = number.concat(alphaUpperCase, character);
   }
-  // THESE STATEMENTS ARE TELLING YOU WHICH VARIABLE ARE THERE.
-  // ALL INCLUDE LOWERCASE
-  // 2 options of lower and uppercase
+
+  // Statements of 2
+
+  // Lowercase and Uppercase
   else if (passwordLowerCase && passwordUpperCase) {
     choices = alpha.concat(alphaUpperCase);
   }
 
-  // 2 options of lowercase and charcters
+  // Lowercase and charcters
   else if (passwordLowerCase && passwordCharacters) {
     choices = alpha.concat(character);
   }
-  // 2 options of lowercase and numbers
+  // Lowercase and Numbers
   else if (passwordLowerCase && passwordNumbers) {
     choices = alpha.concat(number);
 
   }
-  // ALL INCLUDE UPPERCASE
+  // Uppercase and Characters
+  else if (passwordUpperCase && passwordCharacters) {
+    choices = alphaUppercase.concat(character);
+  }
 
-  // ALL INCLUDE NUMBERS
+  // Uppercase and Numbers 
+  else if (passwordUpperCase && passwordNumbers) {
+    choices = alphaUppercase.concat(number);
+  }
+  // Numbers & Characters
+  else if (passwordNumbers && passwordCharacters) {
+    choices = number.concat(character);
+  }
 
-  // CHARACTERS
+  // Individual Choices
+  else if (passwordLowerCase) {
+    choices = alpha;
+  }
+  else if (passwordUpperCase) {
+    choices = alphaUpperCase;
+  }
+  else if (passwordNumbers) {
+    choices = number;
+  }
+  else if (passwordCharacters) {
+    choices = character;
+  }
+
+  else null;
 
 
 
 
 
 
+ 
 
+  // randomly selects an item out of the array.
+  // push that iteam into the password array. 
+  for (var i = 0; i < passwordLength; i++) {
+    var pickChoices = choices[Math.floor(Math.random() * choices.length)];
+    password.push(pickChoices);
+  }
+  // this is where it takes all the info from above and puts it into a final password
+  var theFinalPassword = password.join("");
+
+  document.getElementById("password").textContent = theFinalPassword;
+
+  console.log(theFinalPassword);
 }
 
-generatePassword()
 
 
 
 
 
 
+  //  JUST STEPS THAT I USED IN PROCESS. NOT SURE IF I NEED THIS IN HERE JUST THOUGHT ID INCLUDE IT. 
 
-
-  // THIS IS THE OLD STUFF BEFORE I MERGED THEM INTO ONE LOG
+  // var generateBtn = window.prompt(
+  //   character[Math.floor(Math.random() * character.length)] +
+  //   number[Math.floor(Math.random() * number.length)] +
+  //   alpha[Math.floor(Math.random() * alpha.length)] +
+  //   alphaUpperCase[Math.floor(Math.random() * alphaUpperCase.length)]
+  // );
 
   // console.log(alpha [Math.floor(Math.random() * alpha.length)])
   // console.log(number [Math.floor(Math.random() * number.length)])
@@ -126,48 +182,3 @@ generatePassword()
   // let password = generatePassword();
   // let passwordText = document.querySelector("#password");
   // passwordText.value = password;
-
-
-
-// GIVEN I need a new, secure password
-// WHEN I click the button to generate a password
-//   click event 
-
-// // THEN I am presented with a series of prompts for password criteria
-// window.prompt("")
-// // WHEN prompted for password criteria
-// // THEN I select which criteria to include in the password
-
-
-// // WHEN prompted for the length of the password
-// // THEN I choose a length of at least 8 characters and no more than 128 characters
-// // WHEN prompted for character types to include in the password
-// // THEN I choose lowercase, uppercase, numeric, and / or special characters
-// // WHEN I answer each prompt
-// // THEN my input should be validated and at least one character type should be selected
-// // WHEN all prompts are answered
-// // THEN a password is generated that matches the selected criteria
-// // WHEN the password is generated
-// // THEN the password is either displayed in an alert or written to the page
-
-
-// RYAN TEXT
-  // let hasUpperCase = confirm("Do you want your password to have case sensitive?");
-  // let hasNumbers = confirm("Do you want your password to have numbers?");
-  // let hasCharacters = confirm("Do you want your password to have special characters?");
-  // document.getElementById("password").value = "User selected options: " + passwordLength + ' ' + hasLowerCase + ' ' + hasNumbers + ' ' + hasCharacters;
-
-
-// start function
-// promts 
-// passwordLength = window.promts("How many characters?")  how many charcters 
-// caps 
-// numbers 
-
-// call password function
-
-// passsword function
-// build a password by including
-//   how many characters (passwordLength)
-//   caps 
-//   numbers
