@@ -2,13 +2,13 @@
 
 
 // Special characters 
-var character = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "<", "=", ">", "?", "@", "[", "]", "^", "_", "`", "{", "|", "}", "~"];
+var wordBankCharacter = ["!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "<", "=", ">", "?", "@", "[", "]", "^", "_", "`", "{", "|", "}", "~"];
 // Numeric characters
-var number = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+var wordBankNumber = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 // Alphabetical characters
-var alpha = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+var wordBank = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 //  Alphabetical Uppercase characters
-var alphaUpperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+var wordBankUpper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 // This is the button that when you click it it generates the password
 document.querySelector("#generate").addEventListener("click", generatePassword);
@@ -20,9 +20,8 @@ document.querySelector("#generate").addEventListener("click", generatePassword);
 // Password Lenght Options
 function generatePassword() {
 
-  // This variable holds your slection or critiria of the window prompts of what you want in your password from above. 
-  var choices;
-
+  var storePasswordBank = []
+  
   // This variable is holding an array of the random password generated below.
   var password = []
 
@@ -50,101 +49,42 @@ function generatePassword() {
   
     var passwordUpperCase = window.confirm("Uppercase Letters - Ok or cancel");
 
-    var passwordLowerCase = window.confirm("Lowercase Letters - Ok or cancel");
-
     var passwordNumbers = window.confirm("Numbers - Ok or Cancel");
 
     var passwordCharacters = window.confirm("Special Characters? Ok or Cancel");
 
-  // This is giving us all 4 possitive options.
-  if (passwordLowerCase && passwordUpperCase && passwordNumbers && passwordCharacters) {
-    choices = alpha.concat(alphaUpperCase, number, character);
-  }
 
-  // Statements of 3:
-
-  // Uppercase, Lowercase and Numbers
-  else if (passwordLowerCase && passwordUpperCase && passwordNumbers) {
-    choices = alpha.concat(alphaUpperCase, number);
+  
+  if (passwordUpperCase) {
+    storePasswordBank.push (wordBankUpper[Math.floor(Math.random() * wordBankUpper.length)]);
+    passwordLength--;
+    wordBank= wordBank.concat(wordBankUpper)
   }
-  // Uppercase, Lowercase and Characters
-  else if (passwordLowerCase && passwordUpperCase && passwordCharacters) {
-    choices = alpha.concat(alphaUpperCase, character);
+  if (passwordNumbers) {
+    storePasswordBank.push (wordBankNumber[Math.floor(Math.random() * wordBankNumber.length)]);
+    passwordLength--;
+    wordBank = wordBank.concat(wordBankNumber)
   }
-  // Lowercase, Numbers and Characters
-  else if (passwordLowerCase && passwordNumbers && passwordCharacters) {
-    choices = alpha.concat(number, character);
+  if (passwordCharacters) {
+    storePasswordBank.push (wordBankCharacter[Math.floor(Math.random() * wordBankCharacter.length)]);
+    passwordLength--;
+    wordBank = wordBank.concat(wordBankCharacter)
   }
-  // 3 Uppercase, Numbers and Characters
-  else if (passwordUpperCase && passwordNumbers && passwordCharacters) {
-    choices = number.concat(alphaUpperCase, character);
-  }
-
-  // Statements of 2
-
-  // Lowercase and Uppercase
-  else if (passwordLowerCase && passwordUpperCase) {
-    choices = alpha.concat(alphaUpperCase);
-  }
-
-  // Lowercase and charcters
-  else if (passwordLowerCase && passwordCharacters) {
-    choices = alpha.concat(character);
-  }
-  // Lowercase and Numbers
-  else if (passwordLowerCase && passwordNumbers) {
-    choices = alpha.concat(number);
-
-  }
-  // Uppercase and Characters
-  else if (passwordUpperCase && passwordCharacters) {
-    choices = alphaUppercase.concat(character);
-  }
-
-  // Uppercase and Numbers 
-  else if (passwordUpperCase && passwordNumbers) {
-    choices = alphaUppercase.concat(number);
-  }
-  // Numbers & Characters
-  else if (passwordNumbers && passwordCharacters) {
-    choices = number.concat(character);
-  }
-
-  // Individual Choices
-  else if (passwordLowerCase) {
-    choices = alpha;
-  }
-  else if (passwordUpperCase) {
-    choices = alphaUpperCase;
-  }
-  else if (passwordNumbers) {
-    choices = number;
-  }
-  else if (passwordCharacters) {
-    choices = character;
-  }
-
-  else null;
-
-
-
-
-
-
  
 
   // randomly selects an item out of the array.
   // push that iteam into the password array. 
   for (var i = 0; i < passwordLength; i++) {
-    var pickChoices = choices[Math.floor(Math.random() * choices.length)];
+    var pickChoices = wordBank[Math.floor(Math.random() * wordBank.length)];
     password.push(pickChoices);
   }
   // this is where it takes all the info from above and puts it into a final password
+  password = password.concat(storePasswordBank);
+  
   var theFinalPassword = password.join("");
 
   document.getElementById("password").textContent = theFinalPassword;
 
-  console.log(theFinalPassword);
 }
 
 
